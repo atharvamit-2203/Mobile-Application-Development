@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0F172A">
+
+    <!-- Header with Title and Cart -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1E40AF"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🍽️ Campus Canteen"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Cart Summary Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#3B82F6"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/cartCountText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🛒 0 items"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/cartTotalText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹0.00"
+                    android:textColor="#10B981"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="12dp"/>
+
+                <Button
+                    android:id="@+id/viewCartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="View Cart"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#10B981"
+                    android:enabled="false"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <!-- Search and Filter Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#1E293B">
+
+        <!-- Search Bar -->
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#334155"
+            android:hint="🔍 Search menu items..."
+            android:textColorHint="#94A3B8"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            android:singleLine="true"/>
+
+        <!-- Category Filter Spinner -->
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="#334155"
+            android:padding="12dp"
+            android:popupBackground="#334155"/>
+    </LinearLayout>
+
+    <!-- Menu List -->
+    <ListView
+        android:id="@+id/menuListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#1E293B"
+        android:dividerHeight="12dp"
+        android:padding="16dp"/>
+
+    <!-- Cart Layout (Hidden by default) -->
+    <ScrollView
+        android:id="@+id/cartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:background="#0F172A">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🛒 Your Cart"
+                    android:textSize="24sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/continueShoppingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="← Continue Shopping"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#6366F1"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/cartListView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:divider="#1E293B"
+                android:dividerHeight="12dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Checkout Layout (Hidden by default) -->
+    <LinearLayout
+        android:id="@+id/checkoutLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="#1E293B"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💳 Payment Method"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
+        <RadioGroup
+            android:id="@+id/paymentMethodGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/payNowRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💵 Pay Now (UPI/Card)"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:background="#334155"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioButton
+                android:id="@+id/payLaterRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔜 Pay Later (At Counter)"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:background="#334155"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/placeOrderButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="✅ Place Order"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#10B981"/>
+    </LinearLayout>
+</LinearLayout>

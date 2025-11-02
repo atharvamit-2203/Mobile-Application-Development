@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#2A3F5F"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/eventTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Title"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/eventDescText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="14sp"
+        android:textColor="#B0B0B0"
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/eventDateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📅 Date"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"/>
+
+        <TextView
+            android:id="@+id/eventVenueText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📍 Venue"
+            android:textSize="12sp"
+            android:textColor="#FFA500"
+            android:layout_marginRight="12dp"/>
+
+        <Button
+            android:id="@+id/registerEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Register"
+            android:textSize="12sp"
+            android:backgroundTint="#3B82F6"/>
+    </LinearLayout>
+</LinearLayout>

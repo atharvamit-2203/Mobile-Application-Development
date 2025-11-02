@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+layout_xml = '''<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1F32"
+    android:fillViewport="true">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Campus Buddy"
+        android:textSize="36sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Your Role"
+        android:textSize="16sp"
+        android:textColor="#94A3B8"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
+        android:id="@+id/btnStudent"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="🎓 Student Login"
+        android:textSize="16sp"
+        android:backgroundTint="#3B82F6"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnFaculty"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="🎯 Faculty Login"
+        android:textSize="16sp"
+        android:backgroundTint="#6366F1"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnOrganization"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="🏢 Organization Login"
+        android:textSize="16sp"
+        android:backgroundTint="#A855F7"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnStaff"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="🍽️ Staff Login"
+        android:textSize="16sp"
+        android:backgroundTint="#F59E0B"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="🛡️ Admin Login"
+        android:textSize="16sp"
+        android:backgroundTint="#10B981"
+        android:layout_marginBottom="32dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#94A3B8"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Time Setup"
+        android:textSize="14sp"
+        android:textColor="#94A3B8"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnSetupDatabase"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="🔥 Setup Firebase Database"
+        android:textSize="14sp"
+        android:backgroundTint="#EF4444"/>
+
+</LinearLayout>
+</ScrollView>'''
+
+# Write the file
+with open(r'D:\MyApplication16\app\src\main\res\layout\activity_home.xml', 'w', encoding='utf-8') as f:
+    f.write(layout_xml)
+
+print("✅ activity_home.xml updated with setup button")

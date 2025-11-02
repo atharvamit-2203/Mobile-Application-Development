@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:ns1="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.CampusBuddy" android:usesCleartextTraffic="true" ns1:targetApi="31">
+
+        <activity android:name=".SplashActivity" android:exported="true" android:theme="@style/Theme.CampusBuddy.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TimetableUploadActivity" />
+        <activity android:name=".OrderHistoryActivity" android:exported="false" />
+        <activity android:name=".OrderQRActivity" android:exported="false" />
+        
+        <activity android:name=".TimetableActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".FacultyRoomBookingActivity" />
+        <activity android:name=".OrganizationEventActivity" />
+
+        <activity android:name=".HomeActivity" android:exported="false" />
+
+        <activity android:name=".LoginActivity" android:exported="false" />
+
+        <activity android:name=".RegisterActivity" android:exported="false" />
+
+        <activity android:name=".FirebaseSetupActivity" android:exported="false" />
+
+        <activity android:name=".StudentDashboard" android:exported="false" />
+
+        <activity android:name=".FacultyDashboard" android:exported="false" />
+
+        <activity android:name=".OrganizationDashboard" android:exported="false" />
+
+        <activity android:name=".AdminDashboard" android:exported="false" />
+
+        <activity android:name=".StaffDashboard" android:exported="false" />
+
+
+        <activity android:name=".CanteenActivity" android:exported="false" />
+
+        <activity android:name=".ClubsActivity" android:exported="false" />
+
+        <activity android:name=".EventsActivity" android:exported="false" />
+
+        <activity android:name=".BookingsActivity" android:exported="false" />
+
+        <activity android:name=".NotificationsActivity" android:exported="false" />
+
+
+        <activity android:name=".PaymentQRActivity" android:exported="false" android:label="Payment QR Code" />
+
+        <activity android:name=".StaffOrderScannerActivity" android:exported="false" android:label="Order Scanner" android:screenOrientation="portrait" />
+
+        <activity android:name=".StaffOrdersActivity" android:exported="false" android:label="Orders Management" />
+
+    <activity android:name="com.campusbuddy.FacultyRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.StaffRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.OrganizationRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.MemberRequestsActivity" android:exported="false" /><activity android:name=".AdminSetupActivity" android:exported="false" />    <activity android:name=".PaymentActivity" android:exported="false" android:label="Payment Gateway" />`n</application>
+
+</manifest>

@@ -1,0 +1,60 @@
+﻿# Firebase Setup Instructions
+
+## Step 1: Create Firebase Project
+
+1. Go to https://console.firebase.google.com/
+2. Click 'Add Project'
+3. Name it 'Campus Buddy'
+4. Disable Google Analytics (optional)
+5. Click 'Create Project'
+
+## Step 2: Add Android App
+
+1. Click Android icon in Firebase Console
+2. Enter package name: com.campusbuddy
+3. Download google-services.json
+4. Place it in: D:\MyApplication16\app\google-services.json
+
+## Step 3: Enable Authentication
+
+1. In Firebase Console, go to 'Authentication'
+2. Click 'Get Started'
+3. Enable 'Email/Password' sign-in method
+4. Click 'Save'
+
+## Step 4: Create Firestore Database
+
+1. In Firebase Console, go to 'Firestore Database'
+2. Click 'Create Database'
+3. Start in 'Test Mode' (for development)
+4. Choose a location (e.g., us-central)
+5. Click 'Enable'
+
+## Step 5: Firestore Collections
+
+Your app will automatically create these collections:
+- users (email, name, role, createdAt)
+- clubs (name, description, category)
+- events (title, description, date)
+- bookings (userId, eventId, status)
+
+## Step 6: Add Test User
+
+In Firebase Console > Authentication > Users:
+1. Click 'Add User'
+2. Email: test@student.com
+3. Password: password123
+4. Then go to Firestore > users > Add Document:
+   - Document ID: [the user's UID from Authentication]
+   - Fields:
+     - email: test@student.com
+     - name: Test Student
+     - role: student
+     - createdAt: [timestamp]
+
+## Step 7: Build and Run
+
+cd D:\MyApplication16
+.\gradlew build
+
+Done! Your app now uses Firebase!

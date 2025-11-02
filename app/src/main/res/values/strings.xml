@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Campus Buddy</string>
+    <string name="welcome">Welcome to Campus Buddy</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="student">Student</string>
+    <string name="faculty">Faculty</string>
+    <string name="organization">Organization</string>
+    <string name="staff">Staff</string>
+    <string name="admin">Admin</string>
+</resources>
