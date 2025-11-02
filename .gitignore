@@ -22,3 +22,8 @@ build/
 captures/
 output.json
 *.hprof
+
+# Firebase credentials
+google-services.json
+FIREBASE_SETUP.txt
+*.json
