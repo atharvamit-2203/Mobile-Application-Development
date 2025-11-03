@@ -24,7 +24,7 @@ public class AdminDashboard extends Activity {
             welcomeText.setText("Admin Dashboard");
         }        // Setup card click listeners - Admin has access to everything
         findViewById(R.id.cardUsers).setOnClickListener(v -> 
-            Toast.makeText(this, "Manage Users - Coming Soon", Toast.LENGTH_SHORT).show()
+            startActivity(new Intent(this, ManageUsersActivity.class))
         );
         
         findViewById(R.id.cardClubs).setOnClickListener(v -> 
@@ -43,8 +43,12 @@ public class AdminDashboard extends Activity {
             startActivity(new Intent(this, NotificationsActivity.class))
         );
         
+        findViewById(R.id.cardTeacherAssignment).setOnClickListener(v ->
+            startActivity(new Intent(this, AdminTeacherAssignmentActivity.class))
+        );
+        
         findViewById(R.id.cardSettings).setOnClickListener(v ->
-            Toast.makeText(this, "Settings - Coming Soon", Toast.LENGTH_SHORT).show()
+            startActivity(new Intent(this, SettingsActivity.class))
         );
         
         // Logout button

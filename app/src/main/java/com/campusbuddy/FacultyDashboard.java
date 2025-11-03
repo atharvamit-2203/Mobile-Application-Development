@@ -36,18 +36,17 @@ public class FacultyDashboard extends Activity {
             }
         });
         
-        findViewById(R.id.cardExtraClasses).setOnClickListener(v -> {
-            // Check if ExtraClassBookingActivity exists
-            try {
-                Class.forName("com.campusbuddy.ExtraClassBookingActivity");
-                startActivity(new Intent(this, Class.forName("com.campusbuddy.ExtraClassBookingActivity")));
-            } catch (ClassNotFoundException e) {
-                Toast.makeText(this, "Extra Classes feature coming soon!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        
-        findViewById(R.id.cardAssignments).setOnClickListener(v -> 
-            Toast.makeText(this, "Assignments feature coming soon!", Toast.LENGTH_SHORT).show()
+        findViewById(R.id.cardExtraClasses).setOnClickListener(v -> 
+            startActivity(new Intent(this, FacultyScheduleClassActivity.class))
+        );
+
+        findViewById(R.id.cardAssignments).setOnClickListener(v ->
+            startActivity(new Intent(this, FacultyCourseManagementActivity.class))
+        );
+
+        // Attendance Scanner
+        findViewById(R.id.cardAttendance).setOnClickListener(v -> 
+            startActivity(new Intent(this, FacultyAttendanceScannerActivity.class))
         );
         
         // Setup common card click listeners

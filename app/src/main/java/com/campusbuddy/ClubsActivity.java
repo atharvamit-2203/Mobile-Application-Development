@@ -7,109 +7,224 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.*;
 
-// Browse and join clubs/organizations
+@SuppressWarnings("deprecation")
 public class ClubsActivity extends Activity {
+    private TabHost tabHost;
+    private ListView campusClubsListView;
+    private ListView myClubsListView;
+    private List<Map<String, Object>> allClubs = new ArrayList<>();
+    private List<Map<String, Object>> myClubs = new ArrayList<>();
+    private CampusClubsAdapter campusAdapter;
+    private MyClubsAdapter myAdapter;
+    private Set<String> userMembershipClubIds = new HashSet<>();
+    private Map<String, String> membershipStatuses = new HashMap<>();
 
-    private ListView clubsListView;
-    private List<Map<String, Object>> clubs = new ArrayList<>();
-    private ClubsAdapter adapter;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clubs);
+
+        tabHost = findViewById(R.id.clubsTabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec spec1 = tabHost.newTabSpec("Campus Clubs");
+        spec1.setContent(R.id.campusClubsTab);
+        spec1.setIndicator("Campus Clubs");
+        tabHost.addTab(spec1);
+
+        TabHost.TabSpec spec2 = tabHost.newTabSpec("My Clubs");
+        spec2.setContent(R.id.myClubsTab);
+        spec2.setIndicator("My Clubs");
+        tabHost.addTab(spec2);
+
+        campusClubsListView = findViewById(R.id.campusClubsListView);
+        myClubsListView = findViewById(R.id.myClubsListView);
+
+        campusAdapter = new CampusClubsAdapter();
+        myAdapter = new MyClubsAdapter();
         
-        clubsListView = findViewById(R.id.clubsListView);
-        adapter = new ClubsAdapter();
-        clubsListView.setAdapter(adapter);
-        
-        loadClubs();
+        campusClubsListView.setAdapter(campusAdapter);
+        myClubsListView.setAdapter(myAdapter);
+
+        loadUserMemberships();
     }
-    
-    private void loadClubs() {
+
+    private void loadUserMemberships() {
+        String userId = getSharedPreferences("user", MODE_PRIVATE).getString("user_id", "");
+        if (userId.isEmpty()) {
+            loadAllClubs();
+            return;
+        }
+
+        FirebaseHelper.getUserMemberships(userId, new FirebaseHelper.DataCallback() {
+            @Override
+            public void onSuccess(List<Map<String, Object>> memberships) {
+                userMembershipClubIds.clear();
+                membershipStatuses.clear();
+                
+                for (Map<String, Object> membership : memberships) {
+                    String clubId = (String) membership.get("club_id");
+                    String status = (String) membership.get("status");
+                    if (clubId != null) {
+                        userMembershipClubIds.add(clubId);
+                        if (status != null) {
+                            membershipStatuses.put(clubId, status);
+                        }
+                    }
+                }
+                
+                loadAllClubs();
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(ClubsActivity.this, "Error loading memberships: " + error, Toast.LENGTH_SHORT).show();
+                loadAllClubs();
+            }
+        });
+    }
+
+    private void loadAllClubs() {
         FirebaseHelper.getClubs(new FirebaseHelper.DataCallback() {
             @Override
-            public void onSuccess(List<Map<String, Object>> data) {
-                clubs = data;
-                adapter.notifyDataSetChanged();
+            public void onSuccess(List<Map<String, Object>> clubs) {
+                allClubs.clear();
+                myClubs.clear();
+                
+                for (Map<String, Object> club : clubs) {
+                    allClubs.add(club);
+                    
+                    String clubId = (String) club.get("club_id");
+                    String status = membershipStatuses.get(clubId);
+                    if ("approved".equals(status)) {
+                        myClubs.add(club);
+                    }
+                }
+                
+                campusAdapter.notifyDataSetChanged();
+                myAdapter.notifyDataSetChanged();
             }
-            
+
             @Override
             public void onError(String error) {
-                Toast.makeText(ClubsActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClubsActivity.this, "Error loading clubs: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }
-    
-    private void joinClub(String clubId, int position) {
-        String userId = Prefs.getInstance(this).getUserId();
-        
-        FirebaseHelper.joinClub(clubId, userId, new FirebaseHelper.SingleDataCallback() {
-            @Override
-            public void onSuccess(Map<String, Object> data) {
-                Toast.makeText(ClubsActivity.this, "Join request sent!", Toast.LENGTH_SHORT).show();
-                Map<String, Object> club = clubs.get(position);
-                club.put("membership_status", "pending");
-                adapter.notifyDataSetChanged();
-            }
-            
-            @Override
-            public void onError(String error) {
-                Toast.makeText(ClubsActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    
-    class ClubsAdapter extends BaseAdapter {
+
+    private class CampusClubsAdapter extends BaseAdapter {
         @Override
-        public int getCount() { return clubs.size(); }
-        
+        public int getCount() {
+            return allClubs.size();
+        }
+
         @Override
-        public Object getItem(int position) { return clubs.get(position); }
-        
+        public Object getItem(int position) {
+            return allClubs.get(position);
+        }
+
         @Override
-        public long getItemId(int position) { return position; }
-        
+        public long getItemId(int position) {
+            return position;
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.item_club, parent, false);
             }
-            
-            Map<String, Object> club = clubs.get(position);
-            
+
+            Map<String, Object> club = allClubs.get(position);
+            String clubId = (String) club.get("club_id");
+
             TextView nameText = convertView.findViewById(R.id.clubNameText);
             TextView descText = convertView.findViewById(R.id.clubDescText);
             TextView categoryText = convertView.findViewById(R.id.clubCategoryText);
-            TextView membersText = convertView.findViewById(R.id.clubMembersText);
             Button joinButton = convertView.findViewById(R.id.joinClubButton);
-            
-            nameText.setText((String) club.get("name"));
-            descText.setText((String) club.getOrDefault("description", ""));
-            categoryText.setText((String) club.getOrDefault("category", "General"));
-            
-            Object memberCount = club.get("member_count");
-            Object maxMembers = club.get("max_members");
-            String membersText_str = memberCount != null ? memberCount.toString() : "0";
-            if (maxMembers != null) {
-                membersText_str += " / " + maxMembers;
-            }
-            membersText.setText(membersText_str + " members");
-            
-            String status = (String) club.get("membership_status");
-            if ("pending".equals(status)) {
-                joinButton.setText("Pending");
+
+            nameText.setText((String) club.get("club_name"));
+            descText.setText((String) club.get("description"));
+            categoryText.setText((String) club.get("category"));
+
+            String status = membershipStatuses.get(clubId);
+            if ("approved".equals(status)) {
+                joinButton.setText(" Member");
                 joinButton.setEnabled(false);
-            } else if ("approved".equals(status)) {
-                joinButton.setText("Joined");
+            } else if ("pending".equals(status)) {
+                joinButton.setText("Pending");
                 joinButton.setEnabled(false);
             } else {
                 joinButton.setText("Join Club");
                 joinButton.setEnabled(true);
-                joinButton.setOnClickListener(v -> joinClub((String) club.get("id"), position));
+                joinButton.setOnClickListener(v -> joinClub(clubId));
             }
-            
+
             return convertView;
         }
+    }
+
+    private class MyClubsAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return myClubs.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return myClubs.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.item_my_club, parent, false);
+            }
+
+            Map<String, Object> club = myClubs.get(position);
+
+            TextView nameText = convertView.findViewById(R.id.myClubNameText);
+            TextView descText = convertView.findViewById(R.id.myClubDescText);
+            TextView categoryText = convertView.findViewById(R.id.myClubCategoryText);
+            TextView roleText = convertView.findViewById(R.id.myClubRoleText);
+
+            nameText.setText((String) club.get("club_name"));
+            descText.setText((String) club.get("description"));
+            categoryText.setText("Category: " + club.get("category"));
+            roleText.setText("Role: Member");
+
+            return convertView;
+        }
+    }
+
+    private void joinClub(String clubId) {
+        String userId = getSharedPreferences("user", MODE_PRIVATE).getString("user_id", "");
+        if (userId.isEmpty()) {
+            Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("user_id", userId);
+        request.put("club_id", clubId);
+        request.put("status", "pending");
+        request.put("request_date", new Date().toString());
+
+        FirebaseHelper.addMemberRequest(request, new FirebaseHelper.DataCallback() {
+            @Override
+            public void onSuccess(List<Map<String, Object>> data) {
+                Toast.makeText(ClubsActivity.this, "Join request sent", Toast.LENGTH_SHORT).show();
+                loadUserMemberships();
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(ClubsActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

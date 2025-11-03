@@ -30,6 +30,47 @@ public class HomeActivity extends Activity {
             startActivity(new Intent(this, AdminSetupActivity.class));
             return true;
         });
+        
+        // TEMPORARY FIX: Double-tap Admin button to fix admin role in Firestore
+        final long[] lastAdminClickTime = {0};
+        btnAdmin.setOnClickListener(v -> {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastAdminClickTime[0] < 500) {
+                // Double click detected - fix admin role
+                fixAdminRole();
+            } else {
+                // Single click - normal login
+                lastAdminClickTime[0] = currentTime;
+                openLogin("admin");
+            }
+        });
+    }
+    
+    private void fixAdminRole() {
+        String adminEmail = "admin@mpstme.edu.in";
+        android.widget.Toast.makeText(this, "Fixing admin role...", android.widget.Toast.LENGTH_SHORT).show();
+        
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", adminEmail)
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                if (querySnapshot.isEmpty()) {
+                    android.widget.Toast.makeText(this, "Admin user not found. Please login first.", android.widget.Toast.LENGTH_LONG).show();
+                } else {
+                    querySnapshot.getDocuments().get(0).getReference()
+                        .update("role", "admin")
+                        .addOnSuccessListener(aVoid -> {
+                            android.widget.Toast.makeText(this, "✅ Admin role fixed! Now login again.", android.widget.Toast.LENGTH_LONG).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            android.widget.Toast.makeText(this, "Error: " + e.getMessage(), android.widget.Toast.LENGTH_LONG).show();
+                        });
+                }
+            })
+            .addOnFailureListener(e -> {
+                android.widget.Toast.makeText(this, "Error: " + e.getMessage(), android.widget.Toast.LENGTH_LONG).show();
+            });
     }
 
     private void openLogin(String role) {

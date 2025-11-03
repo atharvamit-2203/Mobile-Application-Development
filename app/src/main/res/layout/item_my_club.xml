@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#1E293B"
+    android:padding="16dp"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:id="@+id/myClubNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Club Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/myClubDescText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Club description"
+        android:textSize="14sp"
+        android:textColor="#94A3B8"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/myClubCategoryText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Category: General"
+            android:textSize="12sp"
+            android:textColor="#64748B"/>
+
+        <TextView
+            android:id="@+id/myClubRoleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Role: Member"
+            android:textSize="12sp"
+            android:textColor="#10B981"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/myClubEventsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No upcoming events"
+        android:textSize="12sp"
+        android:textColor="#64748B"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>

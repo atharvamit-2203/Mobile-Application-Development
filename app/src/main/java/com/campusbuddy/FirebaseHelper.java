@@ -342,7 +342,6 @@ public class FirebaseHelper {
     public static void getClubEvents(DataCallback callback) {
         db.collection("club_events")
             .whereEqualTo("status", "approved")
-            .orderBy("event_date")
             .get()
             .addOnSuccessListener(querySnapshot -> {
                 List<Map<String, Object>> events = new ArrayList<>();
@@ -549,6 +548,51 @@ public class FirebaseHelper {
                     orders.add(order);
                 }
                 callback.onSuccess(orders);
+            })
+            .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+    // Get user's club memberships
+    public static void getUserMemberships(String userId, DataCallback callback) {
+        db.collection("member_requests")
+            .whereEqualTo("user_id", userId)
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                List<Map<String, Object>> memberships = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : querySnapshot) {
+                    Map<String, Object> membership = doc.getData();
+                    membership.put("id", doc.getId());
+                    memberships.add(membership);
+                }
+                callback.onSuccess(memberships);
+            })
+            .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+    // Add club membership request
+    public static void addMemberRequest(Map<String, Object> request, DataCallback callback) {
+        db.collection("member_requests")
+            .add(request)
+            .addOnSuccessListener(documentReference -> {
+                List<Map<String, Object>> result = new ArrayList<>();
+                Map<String, Object> data = new HashMap<>(request);
+                data.put("id", documentReference.getId());
+                result.add(data);
+                callback.onSuccess(result);
+            })
+            .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+    // Mark student attendance
+    public static void markAttendance(Map<String, Object> attendanceData, DataCallback callback) {
+        db.collection("attendance")
+            .add(attendanceData)
+            .addOnSuccessListener(documentReference -> {
+                List<Map<String, Object>> result = new ArrayList<>();
+                Map<String, Object> data = new HashMap<>(attendanceData);
+                data.put("id", documentReference.getId());
+                result.add(data);
+                callback.onSuccess(result);
             })
             .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }

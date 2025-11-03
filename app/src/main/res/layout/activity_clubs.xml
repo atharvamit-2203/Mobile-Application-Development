@@ -1,30 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1F32">
+    android:orientation="vertical"
+    android:background="#0F172A">
 
-    <LinearLayout
+    <!-- Header -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:text=" Clubs"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:padding="16dp"
+        android:background="#1E293B"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Campus Clubs"
-            android:textSize="24sp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+    <!-- TabHost -->
+    <TabHost
+        android:id="@+id/clubsTabHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/clubsListView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:divider="#2A3F5F"
-            android:dividerHeight="8dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </LinearLayout>
-</ScrollView>
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#1E293B"/>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Campus Clubs Tab -->
+                <LinearLayout
+                    android:id="@+id/campusClubsTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Browse and join campus clubs"
+                        android:textSize="14sp"
+                        android:textColor="#94A3B8"
+                        android:padding="12dp"/>
+
+                    <ListView
+                        android:id="@+id/campusClubsListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="#1E293B"
+                        android:dividerHeight="8dp"/>
+                </LinearLayout>
+
+                <!-- My Clubs Tab -->
+                <LinearLayout
+                    android:id="@+id/myClubsTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Your joined clubs"
+                        android:textSize="14sp"
+                        android:textColor="#94A3B8"
+                        android:padding="12dp"/>
+
+                    <ListView
+                        android:id="@+id/myClubsListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="#1E293B"
+                        android:dividerHeight="8dp"/>
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+</LinearLayout>

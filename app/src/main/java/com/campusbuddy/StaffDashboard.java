@@ -34,11 +34,11 @@ public class StaffDashboard extends Activity {
         );
 
         findViewById(R.id.cardMenu).setOnClickListener(v ->
-            Toast.makeText(this, "Menu Management - Coming Soon", Toast.LENGTH_SHORT).show()       
+            startActivity(new Intent(this, MenuManagementActivity.class))       
         );
 
         findViewById(R.id.cardInventory).setOnClickListener(v ->
-            Toast.makeText(this, "Inventory - Coming Soon", Toast.LENGTH_SHORT).show()
+            startActivity(new Intent(this, InventoryActivity.class))
         );
         
         findViewById(R.id.cardNotifications).setOnClickListener(v ->

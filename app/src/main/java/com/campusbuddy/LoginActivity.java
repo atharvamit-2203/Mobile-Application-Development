@@ -6,11 +6,22 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 // Login screen
 public class LoginActivity extends Activity {
+    private static final int RC_SIGN_IN = 9001;
     private String role;
     private EditText emailInput, passwordInput;
+    private GoogleSignInClient googleSignInClient;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +37,13 @@ public class LoginActivity extends Activity {
         Button backBtn = findViewById(R.id.backBtn);
         android.widget.TextView registerLink = findViewById(R.id.registerLink);
         
+        // Show "Forgot Password" for faculty and staff, "Register" for others
+        if (role.equals("faculty") || role.equals("staff")) {
+            registerLink.setText("Forgot Password?");
+        } else {
+            registerLink.setText("Don't have an account? Register");
+        }
+        
         // Show sample credentials for testing
         if (role.equals("student")) {
             Toast.makeText(this, "Test: arjun.sharma@mpstme.edu.in / testpassword123", Toast.LENGTH_LONG).show();
@@ -33,7 +51,13 @@ public class LoginActivity extends Activity {
         
         loginBtn.setOnClickListener(v -> login());
         backBtn.setOnClickListener(v -> finish());
-        registerLink.setOnClickListener(v -> openRegister());
+        registerLink.setOnClickListener(v -> {
+            if (role.equals("faculty") || role.equals("staff")) {
+                openForgotPassword();
+            } else {
+                openRegister();
+            }
+        });
     }
     
     private void openRegister() {
@@ -112,5 +136,101 @@ public class LoginActivity extends Activity {
             case "admin": return new Intent(this, AdminDashboard.class);
             default: return new Intent(this, StudentDashboard.class);
         }
+    }
+    
+    private void openForgotPassword() {
+        // Configure Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        
+        // Show dialog explaining the process
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Reset Password")
+                .setMessage("You will be signed in with Google to verify your identity. After verification, you can set a new password.")
+                .setPositiveButton("Continue with Google", (dialog, which) -> {
+                    Intent signInIntent = googleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                Toast.makeText(this, "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        com.google.firebase.auth.FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            showPasswordResetDialog(user);
+                        }
+                    } else {
+                        Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    
+    private void showPasswordResetDialog(com.google.firebase.auth.FirebaseUser user) {
+        // Create a dialog to set new password
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Set New Password");
+        builder.setMessage("Signed in as: " + user.getEmail());
+        
+        // Create input field for new password
+        final EditText newPasswordInput = new EditText(this);
+        newPasswordInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        newPasswordInput.setHint("Enter new password");
+        newPasswordInput.setPadding(50, 30, 50, 30);
+        
+        builder.setView(newPasswordInput);
+        
+        builder.setPositiveButton("Reset Password", (dialog, which) -> {
+            String newPassword = newPasswordInput.getText().toString().trim();
+            if (newPassword.isEmpty() || newPassword.length() < 6) {
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            // Update password in Firebase
+            user.updatePassword(newPassword)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Password updated successfully! Please login with your new password.", Toast.LENGTH_LONG).show();
+                            // Sign out and return to login
+                            com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+                            googleSignInClient.signOut();
+                        } else {
+                            Toast.makeText(this, "Password update failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            // Sign out if they cancel
+            com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+            googleSignInClient.signOut();
+        });
+        
+        builder.setCancelable(false);
+        builder.show();
     }
 }

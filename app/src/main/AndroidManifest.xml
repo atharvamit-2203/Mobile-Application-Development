@@ -60,10 +60,21 @@
 
         <activity android:name=".PaymentQRActivity" android:exported="false" android:label="Payment QR Code" />
 
-        <activity android:name=".StaffOrderScannerActivity" android:exported="false" android:label="Order Scanner" android:screenOrientation="portrait" />
+        <activity android:name=".StaffOrderScannerActivity" android:exported="false" android:label="Order Scanner" android:screenOrientation="portrait" />`n        <activity android:name=".FacultyAttendanceScannerActivity" android:exported="false" android:label="Attendance Scanner" android:screenOrientation="portrait" />
 
         <activity android:name=".StaffOrdersActivity" android:exported="false" android:label="Orders Management" />
 
-    <activity android:name="com.campusbuddy.FacultyRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.StaffRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.OrganizationRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.MemberRequestsActivity" android:exported="false" /><activity android:name=".AdminSetupActivity" android:exported="false" />    <activity android:name=".PaymentActivity" android:exported="false" android:label="Payment Gateway" />`n</application>
+    <activity android:name="com.campusbuddy.FacultyRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.StaffRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.OrganizationRegisterActivity" android:exported="false" /><activity android:name="com.campusbuddy.MemberRequestsActivity" android:exported="false" /><activity android:name=".AdminSetupActivity" android:exported="false" />    <activity android:name=".ManageUsersActivity" android:exported="false" />
+    <activity android:name=".SettingsActivity" android:exported="false" />
+    <activity android:name=".FacultyRegisterWithGoogleActivity" android:exported="false" />
+    <activity android:name=".FacultyCourseManagementActivity" android:exported="false" />
+    <activity android:name=".FacultyStudentsActivity" android:exported="false" />
+    <activity android:name=".ExtraClassBookingActivity" android:exported="false" />
+    <activity android:name=".MenuManagementActivity" android:exported="false" />
+    <activity android:name=".InventoryActivity" android:exported="false" />
+    <activity android:name=".EditProfileActivity" android:exported="false" />
+    <activity android:name=".PaymentActivity" android:exported="false" android:label="Payment Gateway" />`n        <activity android:name=".AdminTeacherAssignmentActivity" android:exported="false" />`n        <activity android:name=".ViewTeacherAssignmentsActivity" android:exported="false" />`n        <activity android:name=".FacultyScheduleClassActivity" android:exported="false" />`n        <activity android:name=".FixAdminRoleActivity" android:exported="true" />`n`n</application>
 
 </manifest>
+
+

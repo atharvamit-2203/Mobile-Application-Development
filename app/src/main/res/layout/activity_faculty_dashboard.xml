@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="👨‍🏫 Faculty Tools"
+            android:text=" Faculty Tools"
             android:textSize="18sp"
             android:textColor="#94A3B8"
             android:textStyle="bold"
@@ -75,8 +75,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🏢"
-                        android:textSize="32sp"
+                        android:text="📍"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="👥"
-                        android:textSize="32sp"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -148,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="📚"
-                        android:textSize="32sp"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -184,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="📝"
-                        android:textSize="32sp"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -197,13 +197,49 @@
                         android:gravity="center"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Attendance Scanner -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardAttendance"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="#EF4444"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✓"
+                        android:textSize="24sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mark Attendance"
+                        android:textSize="14sp"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </GridLayout>
 
         <!-- Common Features -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📱 General"
+            android:text=" General"
             android:textSize="18sp"
             android:textColor="#94A3B8"
             android:textStyle="bold"
@@ -235,8 +271,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📅"
-                        android:textSize="32sp"
+                        android:text="⏰"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -270,8 +306,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🍽️"
-                        android:textSize="32sp"
+                        android:text="�"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -305,8 +341,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📅"
-                        android:textSize="32sp"
+                        android:text="★"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -341,7 +377,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🔔"
-                        android:textSize="32sp"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -376,7 +412,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="👤"
-                        android:textSize="32sp"
+                        android:textSize="24sp"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -391,3 +427,4 @@
         </GridLayout>
     </LinearLayout>
 </ScrollView>
+
