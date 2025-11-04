@@ -12,7 +12,7 @@ import com.campusbuddy.*;
 
 public class FacultyDashboardActivity extends AppCompatActivity {
     private TextView welcomeText;
-    private CardView cardBookRoom, cardStudents, cardExtraClasses, cardAssignments;
+    private CardView cardBookRoom, cardStudents, cardAttendance;
     private CardView cardTimetable, cardCanteen, cardEvents, cardNotifications, cardProfile;
 
     @Override
@@ -30,8 +30,7 @@ public class FacultyDashboardActivity extends AppCompatActivity {
         // Faculty-specific cards
         cardBookRoom = findViewById(R.id.cardBookRoom);
         cardStudents = findViewById(R.id.cardStudents);
-        cardExtraClasses = findViewById(R.id.cardExtraClasses);
-        cardAssignments = findViewById(R.id.cardAssignments);
+        cardAttendance = findViewById(R.id.cardAttendance);
         
         // Common cards
         cardTimetable = findViewById(R.id.cardTimetable);
@@ -64,13 +63,10 @@ public class FacultyDashboardActivity extends AppCompatActivity {
             startActivity(new Intent(this, FacultyRoomBookingActivity.class)));
         
         cardStudents.setOnClickListener(v -> 
-            Toast.makeText(this, "My Students feature coming soon!", Toast.LENGTH_SHORT).show());
+            startActivity(new Intent(this, FacultyStudentsActivity.class)));
         
-        cardExtraClasses.setOnClickListener(v -> 
-            Toast.makeText(this, "Extra Classes feature coming soon!", Toast.LENGTH_SHORT).show());
-        
-        cardAssignments.setOnClickListener(v -> 
-            Toast.makeText(this, "Assignments feature coming soon!", Toast.LENGTH_SHORT).show());
+        cardAttendance.setOnClickListener(v -> 
+            startActivity(new Intent(this, FacultyAttendanceScannerActivity.class)));
         
         // Common features
         cardTimetable.setOnClickListener(v -> 

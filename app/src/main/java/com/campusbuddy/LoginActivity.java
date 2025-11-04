@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-// Login screen
 public class LoginActivity extends Activity {
     private static final int RC_SIGN_IN = 9001;
     private String role;
@@ -37,7 +36,6 @@ public class LoginActivity extends Activity {
         Button backBtn = findViewById(R.id.backBtn);
         android.widget.TextView registerLink = findViewById(R.id.registerLink);
         
-        // Show "Forgot Password" for faculty and staff, "Register" for others
         if (role.equals("faculty") || role.equals("staff")) {
             registerLink.setText("Forgot Password?");
         } else {

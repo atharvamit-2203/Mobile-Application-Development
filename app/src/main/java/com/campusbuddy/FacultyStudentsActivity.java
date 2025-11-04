@@ -23,30 +23,85 @@ public class FacultyStudentsActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         ScrollView scroll = new ScrollView(this);
+        scroll.setBackgroundColor(0xFF0F172A);
+        
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(40, 40, 40, 40);
+        layout.setPadding(30, 30, 30, 30);
         
         db = FirebaseFirestore.getInstance();
         
-        TextView title = new TextView(this);
-        title.setText("My Students");
-        title.setTextSize(24);
-        title.setPadding(0, 0, 0, 20);
-        layout.addView(title);
+        // Header Card
+        androidx.cardview.widget.CardView headerCard = new androidx.cardview.widget.CardView(this);
+        headerCard.setCardBackgroundColor(0xFF1E293B);
+        headerCard.setRadius(20);
+        headerCard.setCardElevation(8);
+        LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        headerParams.bottomMargin = 25;
+        headerCard.setLayoutParams(headerParams);
         
+        LinearLayout headerLayout = new LinearLayout(this);
+        headerLayout.setOrientation(LinearLayout.VERTICAL);
+        headerLayout.setPadding(30, 30, 30, 30);
+        
+        TextView title = new TextView(this);
+        title.setText("👨‍🎓 My Students");
+        title.setTextSize(28);
+        title.setTextColor(0xFFE2E8F0);
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        headerLayout.addView(title);
+        
+        TextView subtitle = new TextView(this);
+        subtitle.setText("View your assigned students");
+        subtitle.setTextSize(14);
+        subtitle.setTextColor(0xFF94A3B8);
+        subtitle.setPadding(0, 8, 0, 0);
+        headerLayout.addView(subtitle);
+        
+        headerCard.addView(headerLayout);
+        layout.addView(headerCard);
+        
+        // Filter Label
         TextView lblFilter = new TextView(this);
-        lblFilter.setText("Filter by Course:");
-        lblFilter.setPadding(0, 10, 0, 10);
+        lblFilter.setText("📚 Filter by Course");
+        lblFilter.setTextSize(14);
+        lblFilter.setTextColor(0xFFE2E8F0);
+        lblFilter.setTypeface(null, android.graphics.Typeface.BOLD);
+        LinearLayout.LayoutParams filterLabelParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        filterLabelParams.topMargin = 10;
+        filterLabelParams.bottomMargin = 10;
+        lblFilter.setLayoutParams(filterLabelParams);
         layout.addView(lblFilter);
         
         spinnerCourse = new Spinner(this);
+        spinnerCourse.setBackgroundColor(0xFF1E293B);
+        spinnerCourse.setPadding(20, 20, 20, 20);
+        LinearLayout.LayoutParams spinnerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        spinnerParams.bottomMargin = 20;
+        spinnerCourse.setLayoutParams(spinnerParams);
         layout.addView(spinnerCourse);
         
         tvStudentCount = new TextView(this);
         tvStudentCount.setText("Total Students: 0");
-        tvStudentCount.setPadding(0, 20, 0, 10);
         tvStudentCount.setTextSize(16);
+        tvStudentCount.setTextColor(0xFF94A3B8);
+        tvStudentCount.setTypeface(null, android.graphics.Typeface.BOLD);
+        LinearLayout.LayoutParams countParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        countParams.topMargin = 10;
+        countParams.bottomMargin = 15;
+        tvStudentCount.setLayoutParams(countParams);
         layout.addView(tvStudentCount);
         
         progressBar = new ProgressBar(this);
@@ -69,12 +124,27 @@ public class FacultyStudentsActivity extends Activity {
         layout.addView(recyclerContainer);
         
         Button btnRefresh = new Button(this);
-        btnRefresh.setText("Refresh");
+        btnRefresh.setText("🔄 Refresh");
+        btnRefresh.setBackgroundColor(0xFF3B82F6);
+        btnRefresh.setTextColor(0xFFFFFFFF);
+        btnRefresh.setTextSize(16);
+        btnRefresh.setPadding(30, 30, 30, 30);
         btnRefresh.setOnClickListener(v -> loadStudents());
+        LinearLayout.LayoutParams refreshParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        refreshParams.topMargin = 20;
+        refreshParams.bottomMargin = 15;
+        btnRefresh.setLayoutParams(refreshParams);
         layout.addView(btnRefresh);
         
         Button btnBack = new Button(this);
-        btnBack.setText("Back");
+        btnBack.setText("← Back");
+        btnBack.setBackgroundColor(0xFF475569);
+        btnBack.setTextColor(0xFFFFFFFF);
+        btnBack.setTextSize(16);
+        btnBack.setPadding(30, 30, 30, 30);
         btnBack.setOnClickListener(v -> finish());
         layout.addView(btnBack);
         

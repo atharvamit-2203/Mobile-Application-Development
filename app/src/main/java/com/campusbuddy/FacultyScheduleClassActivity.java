@@ -31,34 +31,67 @@ public class FacultyScheduleClassActivity extends Activity {
         db = FirebaseFirestore.getInstance();
         
         ScrollView scrollView = new ScrollView(this);
-        scrollView.setBackgroundColor(0xFF1F2937);
+        scrollView.setBackgroundColor(0xFF0F172A);
         
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(40, 40, 40, 40);
+        layout.setPadding(30, 30, 30, 30);
         
-        // Title
+        // Header Card
+        androidx.cardview.widget.CardView headerCard = new androidx.cardview.widget.CardView(this);
+        headerCard.setCardBackgroundColor(0xFF1E293B);
+        headerCard.setRadius(20);
+        headerCard.setCardElevation(8);
+        LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        headerParams.bottomMargin = 25;
+        headerCard.setLayoutParams(headerParams);
+        
+        LinearLayout headerLayout = new LinearLayout(this);
+        headerLayout.setOrientation(LinearLayout.VERTICAL);
+        headerLayout.setPadding(30, 30, 30, 30);
+        
         TextView title = new TextView(this);
-        title.setText("Schedule Class");
-        title.setTextSize(24);
+        title.setText("📅 Schedule Class");
+        title.setTextSize(28);
         title.setTextColor(0xFFFFFFFF);
-        title.setPadding(0, 0, 0, 30);
-        layout.addView(title);
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        headerLayout.addView(title);
+        
+        TextView subtitle = new TextView(this);
+        subtitle.setText("Create a new class for your assigned students");
+        subtitle.setTextSize(14);
+        subtitle.setTextColor(0xFF94A3B8);
+        subtitle.setPadding(0, 8, 0, 0);
+        headerLayout.addView(subtitle);
+        
+        headerCard.addView(headerLayout);
+        layout.addView(headerCard);
         
         // Class Title
         TextView lblTitle = new TextView(this);
         lblTitle.setText("Class Title");
-        lblTitle.setTextSize(16);
-        lblTitle.setTextColor(0xFFFFFFFF);
-        lblTitle.setPadding(0, 10, 0, 5);
+        lblTitle.setTextSize(15);
+        lblTitle.setTextColor(0xFFE2E8F0);
+        lblTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        lblTitle.setPadding(0, 10, 0, 8);
         layout.addView(lblTitle);
         
         etClassTitle = new EditText(this);
         etClassTitle.setHint("e.g., Data Structures Lecture");
         etClassTitle.setTextColor(0xFFFFFFFF);
-        etClassTitle.setHintTextColor(0xFF9CA3AF);
-        etClassTitle.setBackgroundColor(0xFF374151);
-        etClassTitle.setPadding(20, 20, 20, 20);
+        etClassTitle.setHintTextColor(0xFF64748B);
+        etClassTitle.setBackgroundColor(0xFF1E293B);
+        etClassTitle.setPadding(25, 25, 25, 25);
+        etClassTitle.setTextSize(16);
+        LinearLayout.LayoutParams etParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        etParams.bottomMargin = 5;
+        etClassTitle.setLayoutParams(etParams);
         layout.addView(etClassTitle);
         
         // Subject

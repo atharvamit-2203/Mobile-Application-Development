@@ -21,16 +21,41 @@ public class ViewTeacherAssignmentsActivity extends Activity {
         
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(0xFF1F2937);
-        layout.setPadding(40, 40, 40, 40);
+        layout.setBackgroundColor(0xFF0F172A);
+        layout.setPadding(30, 30, 30, 30);
         
-        // Title
+        // Header Card
+        androidx.cardview.widget.CardView headerCard = new androidx.cardview.widget.CardView(this);
+        headerCard.setCardBackgroundColor(0xFF1E293B);
+        headerCard.setRadius(20);
+        headerCard.setCardElevation(8);
+        LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        headerParams.bottomMargin = 25;
+        headerCard.setLayoutParams(headerParams);
+        
+        LinearLayout headerLayout = new LinearLayout(this);
+        headerLayout.setOrientation(LinearLayout.VERTICAL);
+        headerLayout.setPadding(30, 30, 30, 30);
+        
         TextView title = new TextView(this);
-        title.setText("Teacher Assignments");
-        title.setTextSize(24);
+        title.setText("📋 Teacher Assignments");
+        title.setTextSize(28);
         title.setTextColor(0xFFFFFFFF);
-        title.setPadding(0, 0, 0, 20);
-        layout.addView(title);
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        headerLayout.addView(title);
+        
+        TextView subtitle = new TextView(this);
+        subtitle.setText("View all teacher-student assignments");
+        subtitle.setTextSize(14);
+        subtitle.setTextColor(0xFF94A3B8);
+        subtitle.setPadding(0, 8, 0, 0);
+        headerLayout.addView(subtitle);
+        
+        headerCard.addView(headerLayout);
+        layout.addView(headerCard);
         
         // Progress Bar
         progressBar = new ProgressBar(this);
@@ -48,14 +73,17 @@ public class ViewTeacherAssignmentsActivity extends Activity {
         
         // Back Button
         Button btnBack = new Button(this);
-        btnBack.setText("Back");
-        btnBack.setBackgroundColor(0xFF6B7280);
+        btnBack.setText("← Back");
+        btnBack.setBackgroundColor(0xFF475569);
         btnBack.setTextColor(0xFFFFFFFF);
+        btnBack.setTextSize(16);
+        btnBack.setPadding(30, 30, 30, 30);
         LinearLayout.LayoutParams backParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         );
         backParams.topMargin = 20;
+        backParams.bottomMargin = 20;
         btnBack.setLayoutParams(backParams);
         btnBack.setOnClickListener(v -> finish());
         layout.addView(btnBack);

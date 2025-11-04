@@ -25,92 +25,152 @@ public class AdminTeacherAssignmentActivity extends Activity {
         
         // Create layout
         ScrollView scrollView = new ScrollView(this);
-        scrollView.setBackgroundColor(0xFF1F2937);
+        scrollView.setBackgroundColor(0xFF0F172A);
         
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(40, 40, 40, 40);
+        layout.setPadding(30, 30, 30, 30);
         
-        // Title
+        // Header Card
+        androidx.cardview.widget.CardView headerCard = new androidx.cardview.widget.CardView(this);
+        headerCard.setCardBackgroundColor(0xFF1E293B);
+        headerCard.setRadius(20);
+        headerCard.setCardElevation(8);
+        LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        headerParams.bottomMargin = 30;
+        headerCard.setLayoutParams(headerParams);
+        
+        LinearLayout headerLayout = new LinearLayout(this);
+        headerLayout.setOrientation(LinearLayout.VERTICAL);
+        headerLayout.setPadding(30, 30, 30, 30);
+        
         TextView title = new TextView(this);
-        title.setText("Assign Teachers to Students");
-        title.setTextSize(24);
+        title.setText("👨‍🏫 Assign Teachers");
+        title.setTextSize(28);
         title.setTextColor(0xFFFFFFFF);
-        title.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-        title.setPadding(0, 0, 0, 30);
-        layout.addView(title);
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        headerLayout.addView(title);
+        
+        TextView subtitle = new TextView(this);
+        subtitle.setText("Connect teachers with students by subject and class");
+        subtitle.setTextSize(14);
+        subtitle.setTextColor(0xFF94A3B8);
+        subtitle.setPadding(0, 8, 0, 0);
+        headerLayout.addView(subtitle);
+        
+        headerCard.addView(headerLayout);
+        layout.addView(headerCard);
         
         // Faculty Selection
         TextView lblFaculty = new TextView(this);
         lblFaculty.setText("Select Faculty");
-        lblFaculty.setTextSize(16);
-        lblFaculty.setTextColor(0xFFFFFFFF);
-        lblFaculty.setPadding(0, 10, 0, 5);
+        lblFaculty.setTextSize(15);
+        lblFaculty.setTextColor(0xFFE2E8F0);
+        lblFaculty.setTypeface(null, android.graphics.Typeface.BOLD);
+        lblFaculty.setPadding(0, 10, 0, 8);
         layout.addView(lblFaculty);
         
         spinnerFaculty = new Spinner(this);
-        spinnerFaculty.setBackgroundColor(0xFF374151);
-        spinnerFaculty.setPadding(20, 20, 20, 20);
+        spinnerFaculty.setBackgroundColor(0xFF1E293B);
+        spinnerFaculty.setPadding(25, 25, 25, 25);
+        LinearLayout.LayoutParams spinnerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        spinnerParams.bottomMargin = 5;
+        spinnerFaculty.setLayoutParams(spinnerParams);
         layout.addView(spinnerFaculty);
         
         // Subject
         TextView lblSubject = new TextView(this);
         lblSubject.setText("Subject");
-        lblSubject.setTextSize(16);
-        lblSubject.setTextColor(0xFFFFFFFF);
-        lblSubject.setPadding(0, 20, 0, 5);
+        lblSubject.setTextSize(15);
+        lblSubject.setTextColor(0xFFE2E8F0);
+        lblSubject.setTypeface(null, android.graphics.Typeface.BOLD);
+        lblSubject.setPadding(0, 20, 0, 8);
         layout.addView(lblSubject);
         
         spinnerSubject = new Spinner(this);
-        spinnerSubject.setBackgroundColor(0xFF374151);
-        spinnerSubject.setPadding(20, 20, 20, 20);
+        spinnerSubject.setBackgroundColor(0xFF1E293B);
+        spinnerSubject.setPadding(25, 25, 25, 25);
+        spinnerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        spinnerParams.bottomMargin = 5;
+        spinnerSubject.setLayoutParams(spinnerParams);
         layout.addView(spinnerSubject);
         
         // Course
         TextView lblCourse = new TextView(this);
         lblCourse.setText("Course");
-        lblCourse.setTextSize(16);
-        lblCourse.setTextColor(0xFFFFFFFF);
-        lblCourse.setPadding(0, 20, 0, 5);
+        lblCourse.setTextSize(15);
+        lblCourse.setTextColor(0xFFE2E8F0);
+        lblCourse.setTypeface(null, android.graphics.Typeface.BOLD);
+        lblCourse.setPadding(0, 20, 0, 8);
         layout.addView(lblCourse);
         
         spinnerCourse = new Spinner(this);
-        spinnerCourse.setBackgroundColor(0xFF374151);
-        spinnerCourse.setPadding(20, 20, 20, 20);
+        spinnerCourse.setBackgroundColor(0xFF1E293B);
+        spinnerCourse.setPadding(25, 25, 25, 25);
+        spinnerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        spinnerParams.bottomMargin = 5;
+        spinnerCourse.setLayoutParams(spinnerParams);
         layout.addView(spinnerCourse);
         
         // Year
         TextView lblYear = new TextView(this);
         lblYear.setText("Year");
-        lblYear.setTextSize(16);
-        lblYear.setTextColor(0xFFFFFFFF);
-        lblYear.setPadding(0, 20, 0, 5);
+        lblYear.setTextSize(15);
+        lblYear.setTextColor(0xFFE2E8F0);
+        lblYear.setTypeface(null, android.graphics.Typeface.BOLD);
+        lblYear.setPadding(0, 20, 0, 8);
         layout.addView(lblYear);
         
         spinnerYear = new Spinner(this);
-        spinnerYear.setBackgroundColor(0xFF374151);
-        spinnerYear.setPadding(20, 20, 20, 20);
+        spinnerYear.setBackgroundColor(0xFF1E293B);
+        spinnerYear.setPadding(25, 25, 25, 25);
+        spinnerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        spinnerParams.bottomMargin = 5;
+        spinnerYear.setLayoutParams(spinnerParams);
         layout.addView(spinnerYear);
         
         // Batch
         TextView lblBatch = new TextView(this);
         lblBatch.setText("Batch");
-        lblBatch.setTextSize(16);
-        lblBatch.setTextColor(0xFFFFFFFF);
-        lblBatch.setPadding(0, 20, 0, 5);
+        lblBatch.setTextSize(15);
+        lblBatch.setTextColor(0xFFE2E8F0);
+        lblBatch.setTypeface(null, android.graphics.Typeface.BOLD);
+        lblBatch.setPadding(0, 20, 0, 8);
         layout.addView(lblBatch);
         
         spinnerBatch = new Spinner(this);
-        spinnerBatch.setBackgroundColor(0xFF374151);
-        spinnerBatch.setPadding(20, 20, 20, 20);
+        spinnerBatch.setBackgroundColor(0xFF1E293B);
+        spinnerBatch.setPadding(25, 25, 25, 25);
+        spinnerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        spinnerParams.bottomMargin = 5;
+        spinnerBatch.setLayoutParams(spinnerParams);
         layout.addView(spinnerBatch);
         
         // Status Text
         tvStatus = new TextView(this);
         tvStatus.setTextSize(14);
         tvStatus.setTextColor(0xFF10B981);
-        tvStatus.setPadding(0, 20, 0, 10);
+        tvStatus.setPadding(20, 25, 20, 15);
         tvStatus.setVisibility(TextView.GONE);
+        tvStatus.setTypeface(null, android.graphics.Typeface.BOLD);
         layout.addView(tvStatus);
         
         // Progress Bar
@@ -120,40 +180,49 @@ public class AdminTeacherAssignmentActivity extends Activity {
         
         // Assign Button
         btnAssign = new Button(this);
-        btnAssign.setText("Assign Teacher to Students");
+        btnAssign.setText("✓ Assign Teacher to Students");
         btnAssign.setBackgroundColor(0xFF3B82F6);
         btnAssign.setTextColor(0xFFFFFFFF);
+        btnAssign.setTextSize(16);
+        btnAssign.setTypeface(null, android.graphics.Typeface.BOLD);
+        btnAssign.setPadding(30, 30, 30, 30);
         LinearLayout.LayoutParams assignParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        assignParams.topMargin = 30;
+        assignParams.topMargin = 35;
         btnAssign.setLayoutParams(assignParams);
         layout.addView(btnAssign);
         
         // View Assignments Button
         btnViewAssignments = new Button(this);
-        btnViewAssignments.setText("View All Assignments");
+        btnViewAssignments.setText("📋 View All Assignments");
         btnViewAssignments.setBackgroundColor(0xFF10B981);
         btnViewAssignments.setTextColor(0xFFFFFFFF);
+        btnViewAssignments.setTextSize(16);
+        btnViewAssignments.setTypeface(null, android.graphics.Typeface.BOLD);
+        btnViewAssignments.setPadding(30, 30, 30, 30);
         LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        viewParams.topMargin = 15;
+        viewParams.topMargin = 20;
         btnViewAssignments.setLayoutParams(viewParams);
         layout.addView(btnViewAssignments);
         
         // Back Button
         btnBack = new Button(this);
-        btnBack.setText("Back");
-        btnBack.setBackgroundColor(0xFF6B7280);
+        btnBack.setText("← Back");
+        btnBack.setBackgroundColor(0xFF475569);
         btnBack.setTextColor(0xFFFFFFFF);
+        btnBack.setTextSize(16);
+        btnBack.setPadding(30, 30, 30, 30);
         LinearLayout.LayoutParams backParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        backParams.topMargin = 15;
+        backParams.topMargin = 20;
+        backParams.bottomMargin = 30;
         btnBack.setLayoutParams(backParams);
         layout.addView(btnBack);
         

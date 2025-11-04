@@ -26,22 +26,8 @@ public class FacultyDashboard extends Activity {
             startActivity(new Intent(this, FacultyRoomBookingActivity.class))
         );
         
-        findViewById(R.id.cardStudents).setOnClickListener(v -> {
-            // Check if FacultyStudentsActivity exists
-            try {
-                Class.forName("com.campusbuddy.FacultyStudentsActivity");
-                startActivity(new Intent(this, Class.forName("com.campusbuddy.FacultyStudentsActivity")));
-            } catch (ClassNotFoundException e) {
-                Toast.makeText(this, "My Students feature coming soon!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        
-        findViewById(R.id.cardExtraClasses).setOnClickListener(v -> 
-            startActivity(new Intent(this, FacultyScheduleClassActivity.class))
-        );
-
-        findViewById(R.id.cardAssignments).setOnClickListener(v ->
-            startActivity(new Intent(this, FacultyCourseManagementActivity.class))
+        findViewById(R.id.cardStudents).setOnClickListener(v -> 
+            startActivity(new Intent(this, FacultyStudentsActivity.class))
         );
 
         // Attendance Scanner
