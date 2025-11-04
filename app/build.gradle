@@ -16,6 +16,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
+        // Store API keys securely - read from local.properties
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.withInputStream { localProperties.load(it) }
+        }
+        def geminiKey = localProperties.getProperty('GEMINI_API_KEY') ?: '""'
+        buildConfigField "String", "GEMINI_API_KEY", "\"${geminiKey}\""
+        
         vectorDrawables {
             useSupportLibrary = true
         }

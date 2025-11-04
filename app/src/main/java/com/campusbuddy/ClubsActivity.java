@@ -94,7 +94,11 @@ public class ClubsActivity extends Activity {
                 for (Map<String, Object> club : clubs) {
                     allClubs.add(club);
                     
-                    String clubId = (String) club.get("club_id");
+                    // Use "id" which is the document ID added by FirebaseHelper.getClubs()
+                    String clubId = (String) club.get("id");
+                    if (clubId == null) {
+                        clubId = (String) club.get("club_id"); // Fallback
+                    }
                     String status = membershipStatuses.get(clubId);
                     if ("approved".equals(status)) {
                         myClubs.add(club);
@@ -135,7 +139,12 @@ public class ClubsActivity extends Activity {
             }
 
             Map<String, Object> club = allClubs.get(position);
-            String clubId = (String) club.get("club_id");
+            // Use "id" which is the document ID added by FirebaseHelper.getClubs()
+            String tempClubId = (String) club.get("id");
+            if (tempClubId == null) {
+                tempClubId = (String) club.get("club_id"); // Fallback
+            }
+            final String clubId = tempClubId; // Make final for lambda
 
             TextView nameText = convertView.findViewById(R.id.clubNameText);
             TextView descText = convertView.findViewById(R.id.clubDescText);

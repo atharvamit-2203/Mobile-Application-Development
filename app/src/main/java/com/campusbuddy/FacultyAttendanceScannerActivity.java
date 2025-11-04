@@ -48,61 +48,51 @@ public class FacultyAttendanceScannerActivity extends Activity {
     }
     
     private void loadFacultyLectures() {
-        Prefs prefs = Prefs.getInstance(this);
-        String facultyId = prefs.getUserId();
-        
-        // Get today's day
-        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-        String today = dayFormat.format(new Date());
-        
-        FirebaseHelper.getTimetable(facultyId, today, new FirebaseHelper.DataCallback() {
-            @Override
-            public void onSuccess(List<Map<String, Object>> lectures) {
-                facultyLectures.clear();
-                facultyLectures.addAll(lectures);
+        // Use TimetableNotificationHelper to get today's lectures
+        TimetableNotificationHelper.getTodaysLectures(this, lectures -> {
+            facultyLectures.clear();
+            facultyLectures.addAll(lectures);
+            
+            List<String> lectureNames = new ArrayList<>();
+            for (Map<String, Object> lecture : lectures) {
+                String subject = (String) lecture.get("subject");
+                String startTime = (String) lecture.get("start_time");
+                String endTime = (String) lecture.get("end_time");
+                String room = (String) lecture.get("room");
                 
-                List<String> lectureNames = new ArrayList<>();
-                for (Map<String, Object> lecture : lectures) {
-                    String subject = (String) lecture.get("subject");
-                    String time = (String) lecture.get("time");
-                    String room = (String) lecture.get("room");
-                    lectureNames.add(subject + " - " + time + " (" + room + ")");
-                }
-                
-                if (lectureNames.isEmpty()) {
-                    lectureNames.add("No lectures today");
-                }
-                
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    FacultyAttendanceScannerActivity.this,
-                    android.R.layout.simple_spinner_item,
-                    lectureNames
-                );
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerLectures.setAdapter(adapter);
-                
-                spinnerLectures.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
-                        if (position < facultyLectures.size()) {
-                            Map<String, Object> lecture = facultyLectures.get(position);
-                            selectedLectureId = (String) lecture.get("id");
-                            updateLectureInfo(lecture);
-                        }
-                    }
-                    
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        selectedLectureId = null;
-                    }
-                });
+                String timeStr = startTime + " - " + endTime;
+                String roomStr = (room != null && !room.isEmpty()) ? " (" + room + ")" : "";
+                lectureNames.add(subject + " - " + timeStr + roomStr);
             }
             
-            @Override
-            public void onError(String error) {
-                Toast.makeText(FacultyAttendanceScannerActivity.this, 
-                    "Error loading lectures: " + error, Toast.LENGTH_SHORT).show();
+            if (lectureNames.isEmpty()) {
+                lectureNames.add("No lectures today - Upload timetable first");
+                tvLectureInfo.setText("Please upload your timetable to see today's lectures");
             }
+            
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                FacultyAttendanceScannerActivity.this,
+                android.R.layout.simple_spinner_item,
+                lectureNames
+            );
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerLectures.setAdapter(adapter);
+            
+            spinnerLectures.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
+                    if (position < facultyLectures.size()) {
+                        Map<String, Object> lecture = facultyLectures.get(position);
+                        selectedLectureId = lecture.get("id") != null ? lecture.get("id").toString() : "";
+                        updateLectureInfo(lecture);
+                    }
+                }
+                
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    selectedLectureId = null;
+                }
+            });
         });
     }
     

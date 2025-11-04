@@ -23,7 +23,6 @@ public class AdminTeacherAssignmentActivity extends Activity {
         
         db = FirebaseFirestore.getInstance();
         
-        // Create layout
         ScrollView scrollView = new ScrollView(this);
         scrollView.setBackgroundColor(0xFF0F172A);
         
@@ -31,7 +30,6 @@ public class AdminTeacherAssignmentActivity extends Activity {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(30, 30, 30, 30);
         
-        // Header Card
         androidx.cardview.widget.CardView headerCard = new androidx.cardview.widget.CardView(this);
         headerCard.setCardBackgroundColor(0xFF1E293B);
         headerCard.setRadius(20);

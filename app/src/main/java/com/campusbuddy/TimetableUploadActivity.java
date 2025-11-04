@@ -171,26 +171,74 @@ public class TimetableUploadActivity extends Activity {
         try {
             ivPreview.setImageURI(imageUri);
             previewLayout.setVisibility(android.view.View.VISIBLE);
-            tvStatus.setText("✅ Image loaded successfully!");
-            tvStatus.setTextColor(0xFF10B981);
+            tvStatus.setText("📤 Processing image with AI...");
+            tvStatus.setTextColor(0xFF3B82F6);
             
-            new android.app.AlertDialog.Builder(this)
-                .setTitle("📸 Image Loaded")
-                .setMessage("Image file upload successful!\n\n" +
-                    "⚠️ Automatic OCR processing is coming soon.\n\n" +
-                    "For now, please:\n" +
-                    "1. Go back to Timetable\n" +
-                    "2. Use 'Add Class' button\n" +
-                    "3. Manually enter your schedule")
-                .setPositiveButton("Go to Manual Entry", (dialog, which) -> finish())
-                .setNegativeButton("OK", null)
-                .show();
+            // Get file path from URI
+            String filePath = getFilePathFromUri(imageUri);
+            if (filePath == null) {
+                tvStatus.setText("❌ Could not access image file");
+                tvStatus.setTextColor(0xFFEF4444);
+                return;
+            }
+            
+            java.io.File imageFile = new java.io.File(filePath);
+            
+            // Upload to Gemini API for OCR
+            ApiService.uploadTimetableImage(this, imageFile, new ApiService.TimetableUploadCallback() {
+                @Override
+                public void onSuccess(java.util.List<java.util.Map<String, Object>> timetableEntries) {
+                    runOnUiThread(() -> {
+                        tvStatus.setText("✅ Timetable extracted and saved!");
+                        tvStatus.setTextColor(0xFF10B981);
+                        
+                        new android.app.AlertDialog.Builder(TimetableUploadActivity.this)
+                            .setTitle("🎉 Success!")
+                            .setMessage("Your timetable has been extracted and saved!\n\n" +
+                                "Found " + timetableEntries.size() + " lectures.\n\n" +
+                                "You will receive notifications 10 minutes before each lecture.")
+                            .setPositiveButton("View Timetable", (dialog, which) -> {
+                                // Schedule notifications for all lectures
+                                TimetableNotificationHelper.scheduleAllNotifications(TimetableUploadActivity.this);
+                                finish();
+                            })
+                            .setNegativeButton("OK", (dialog, which) -> {
+                                // Schedule notifications
+                                TimetableNotificationHelper.scheduleAllNotifications(TimetableUploadActivity.this);
+                                finish();
+                            })
+                            .show();
+                    });
+                }
+                
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> {
+                        tvStatus.setText("❌ Error: " + error);
+                        tvStatus.setTextColor(0xFFEF4444);
+                        Toast.makeText(TimetableUploadActivity.this, "Error: " + error, Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
             
         } catch (Exception e) {
             tvStatus.setText("❌ Error loading image");
             tvStatus.setTextColor(0xFFEF4444);
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+    
+    private String getFilePathFromUri(Uri uri) {
+        String[] projection = { android.provider.MediaStore.Images.Media.DATA };
+        android.database.Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(columnIndex);
+            cursor.close();
+            return path;
+        }
+        return uri.getPath();
     }
     
     private void processPDF(Uri pdfUri) {

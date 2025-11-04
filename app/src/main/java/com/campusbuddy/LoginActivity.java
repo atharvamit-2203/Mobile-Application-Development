@@ -73,7 +73,6 @@ public class LoginActivity extends Activity {
                 intent = new Intent(this, RegisterActivity.class);
                 break;
             case "admin":
-                // Admin cannot register via app
                 Toast.makeText(this, "Admin registration is not available. Contact system administrator.", Toast.LENGTH_LONG).show();
                 return;
             default:
@@ -99,14 +98,12 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(com.google.firebase.auth.FirebaseUser user, String userRole) {
                 runOnUiThread(() -> {
-                    // Save to prefs
                     Prefs.getInstance(LoginActivity.this).setUserId(user.getUid());
                     Prefs.getInstance(LoginActivity.this).setUserRole(userRole);
                     Prefs.getInstance(LoginActivity.this).setUserData(email, user.getDisplayName() != null ? user.getDisplayName() : email);
                     
                     Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                     
-                    // Navigate to dashboard
                     Intent intent = getDashboardIntent(userRole);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -135,7 +132,6 @@ public class LoginActivity extends Activity {
     }
     
     private void openForgotPassword() {
-        // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -143,7 +139,6 @@ public class LoginActivity extends Activity {
         
         googleSignInClient = GoogleSignIn.getClient(this, gso);
         
-        // Show dialog explaining the process
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Reset Password")
                 .setMessage("You will be signed in with Google to verify your identity. After verification, you can set a new password.")
@@ -186,12 +181,10 @@ public class LoginActivity extends Activity {
     }
     
     private void showPasswordResetDialog(com.google.firebase.auth.FirebaseUser user) {
-        // Create a dialog to set new password
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("Set New Password");
         builder.setMessage("Signed in as: " + user.getEmail());
         
-        // Create input field for new password
         final EditText newPasswordInput = new EditText(this);
         newPasswordInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
         newPasswordInput.setHint("Enter new password");
@@ -206,7 +199,6 @@ public class LoginActivity extends Activity {
                 return;
             }
             
-            // Update password in Firebase
             user.updatePassword(newPassword)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -221,7 +213,6 @@ public class LoginActivity extends Activity {
         });
         
         builder.setNegativeButton("Cancel", (dialog, which) -> {
-            // Sign out if they cancel
             com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
             googleSignInClient.signOut();
         });

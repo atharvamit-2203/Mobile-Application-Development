@@ -33,65 +33,142 @@ public class MemberRequestsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member_requests);
         
-        db = FirebaseFirestore.getInstance();
-        organizationId = Prefs.getInstance(this).getUserId();
-        requests = new ArrayList<>();
-        
-        // Initialize views
-        recyclerView = findViewById(R.id.recyclerView);
-        emptyView = findViewById(R.id.emptyView);
-        
-        // Setup RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RequestsAdapter();
-        recyclerView.setAdapter(adapter);
-        
-        // Back button
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
-        
-        // Load requests
-        loadMemberRequests();
+        try {
+            setContentView(R.layout.activity_member_requests);
+            
+            db = FirebaseFirestore.getInstance();
+            requests = new ArrayList<>();
+            
+            // Initialize views
+            recyclerView = findViewById(R.id.recyclerView);
+            emptyView = findViewById(R.id.emptyView);
+            
+            if (recyclerView == null || emptyView == null) {
+                Toast.makeText(this, "Error: Views not found in layout", Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
+            
+            // Setup RecyclerView
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            adapter = new RequestsAdapter();
+            recyclerView.setAdapter(adapter);
+            
+            // Back button
+            View btnBack = findViewById(R.id.btnBack);
+            if (btnBack != null) {
+                btnBack.setOnClickListener(v -> finish());
+            }
+            
+            // Get organization ID from Intent extras
+            organizationId = getIntent().getStringExtra("organizationId");
+            android.util.Log.d("MemberRequests", "Intent organizationId: " + organizationId);
+            
+            // Fallback: if not passed via Intent, use user's ID (club doc ID = user ID)
+            if (organizationId == null) {
+                organizationId = Prefs.getInstance(this).getUserId();
+                android.util.Log.d("MemberRequests", "Using user ID as organizationId: " + organizationId);
+            }
+            
+            // Load requests
+            if (organizationId != null) {
+                loadMemberRequests();
+            } else {
+                Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            
+        } catch (Exception e) {
+            android.util.Log.e("MemberRequests", "Error in onCreate", e);
+            Toast.makeText(this, "Error loading page: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
     
     private void loadMemberRequests() {
-        // Query for pending join requests for this organization
-        db.collection("member_requests")
-            .whereEqualTo("organizationId", organizationId)
-            .whereEqualTo("status", "pending")
-            .get()
-            .addOnSuccessListener(queryDocumentSnapshots -> {
+        try {
+            // Debug logging
+            String debugMsg = "Loading requests for club_id: " + organizationId;
+            Toast.makeText(this, debugMsg, Toast.LENGTH_LONG).show();
+            android.util.Log.d("MemberRequests", debugMsg);
+            
+            // First, let's query ALL member_requests to see what's there
+            db.collection("member_requests")
+                .get()
+                .addOnSuccessListener(allDocs -> {
+                    android.util.Log.d("MemberRequests", "Total member_requests in DB: " + allDocs.size());
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : allDocs.getDocuments()) {
+                        String clubId = doc.getString("club_id");
+                        String status = doc.getString("status");
+                        android.util.Log.d("MemberRequests", "Found request - club_id: " + clubId + ", status: " + status + ", matches: " + (clubId != null && clubId.equals(organizationId)));
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    android.util.Log.e("MemberRequests", "Error querying all requests", e);
+                });
+            
+            // Query for pending join requests for this organization
+            // Note: ClubsActivity stores it as "club_id", not "organizationId"
+            db.collection("member_requests")
+                .whereEqualTo("club_id", organizationId)
+                .whereEqualTo("status", "pending")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                android.util.Log.d("MemberRequests", "Query with filters returned " + queryDocumentSnapshots.size() + " documents");
                 requests.clear();
                 
-                for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                    MemberRequest request = new MemberRequest();
-                    request.id = doc.getId();
-                    request.studentId = doc.getString("studentId");
-                    request.studentName = doc.getString("studentName");
-                    request.studentEmail = doc.getString("studentEmail");
-                    request.course = doc.getString("course");
-                    request.semester = doc.getString("semester");
-                    request.message = doc.getString("message");
-                    request.timestamp = doc.getLong("timestamp");
-                    
-                    requests.add(request);
-                }
-                
-                // Update UI
-                if (requests.isEmpty()) {
+                if (queryDocumentSnapshots.isEmpty()) {
+                    // No requests found
                     recyclerView.setVisibility(View.GONE);
                     emptyView.setVisibility(View.VISIBLE);
-                } else {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    emptyView.setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
+                    Toast.makeText(this, "No pending requests found. Check logs for debug info.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
+                // Process each request and fetch user details
+                for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                    String userId = doc.getString("user_id");
+                    String requestId = doc.getId();
+                    
+                    // Fetch user details from users collection
+                    db.collection("users").document(userId)
+                        .get()
+                        .addOnSuccessListener(userDoc -> {
+                            if (userDoc.exists()) {
+                                MemberRequest request = new MemberRequest();
+                                request.id = requestId;
+                                request.studentId = userId;
+                                request.studentName = userDoc.getString("name");
+                                request.studentEmail = userDoc.getString("email");
+                                request.course = userDoc.getString("course");
+                                request.semester = userDoc.getString("semester");
+                                request.message = doc.getString("message") != null ? doc.getString("message") : "";
+                                request.timestamp = doc.contains("timestamp") ? doc.getLong("timestamp") : System.currentTimeMillis();
+                                
+                                requests.add(request);
+                                
+                                // Update UI when all requests are loaded
+                                if (requests.size() == queryDocumentSnapshots.size()) {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    emptyView.setVisibility(View.GONE);
+                                    adapter.notifyDataSetChanged();
+                                    Toast.makeText(this, "Found " + requests.size() + " requests", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                 }
             })
             .addOnFailureListener(e -> {
+                android.util.Log.e("MemberRequests", "Query failed", e);
                 Toast.makeText(this, "Failed to load requests: " + e.getMessage(), 
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_LONG).show();
             });
+            
+        } catch (Exception e) {
+            android.util.Log.e("MemberRequests", "Error in loadMemberRequests", e);
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
     
     private void approveRequest(MemberRequest request, int position) {

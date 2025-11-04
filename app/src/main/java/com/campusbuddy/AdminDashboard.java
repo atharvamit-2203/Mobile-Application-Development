@@ -7,7 +7,6 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-// Admin dashboard
 public class AdminDashboard extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +21,7 @@ public class AdminDashboard extends Activity {
             welcomeText.setText("Admin: " + name);
         } else {
             welcomeText.setText("Admin Dashboard");
-        }        // Setup card click listeners - Admin has access to everything
+        }
         findViewById(R.id.cardUsers).setOnClickListener(v -> 
             startActivity(new Intent(this, ManageUsersActivity.class))
         );
@@ -51,7 +50,6 @@ public class AdminDashboard extends Activity {
             startActivity(new Intent(this, SettingsActivity.class))
         );
         
-        // Logout button
         btnLogout.setOnClickListener(v -> {
             Prefs.getInstance(this).clear();
             Intent intent = new Intent(this, HomeActivity.class);

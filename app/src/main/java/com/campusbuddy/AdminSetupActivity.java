@@ -9,10 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * TEMPORARY ACTIVITY TO CREATE ADMIN USER
- * Use this once to set up admin, then remove or disable
- */
 public class AdminSetupActivity extends Activity {
     
     private EditText emailInput;
@@ -53,7 +49,6 @@ public class AdminSetupActivity extends Activity {
         
         Toast.makeText(this, "Creating admin user...", Toast.LENGTH_SHORT).show();
         
-        // Register with Firebase Auth
         FirebaseHelper.register(email, password, new FirebaseHelper.AuthCallback() {
             @Override
             public void onSuccess(String userId) {
@@ -72,7 +67,6 @@ public class AdminSetupActivity extends Activity {
                                 "✅ Admin user created successfully!\nEmail: " + email, 
                                 Toast.LENGTH_LONG).show();
                             
-                            // Clear fields
                             emailInput.setText("");
                             passwordInput.setText("");
                             nameInput.setText("");
