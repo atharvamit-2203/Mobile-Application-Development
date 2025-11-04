@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +62,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Faculty-Specific Features -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,7 +77,6 @@
             android:columnCount="2"
             android:layout_marginBottom="24dp">
 
-            <!-- Room Booking -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardBookRoom"
                 android:layout_width="0dp"
@@ -115,7 +112,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- My Students -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardStudents"
                 android:layout_width="0dp"
@@ -153,7 +149,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Attendance Scanner -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardAttendance"
                 android:layout_width="0dp"
@@ -190,7 +185,6 @@
             </androidx.cardview.widget.CardView>
         </GridLayout>
 
-        <!-- Common Features -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -205,7 +199,6 @@
             android:layout_height="wrap_content"
             android:columnCount="2">
 
-            <!-- Timetable -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardTimetable"
                 android:layout_width="0dp"
@@ -240,7 +233,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Canteen -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCanteen"
                 android:layout_width="0dp"
@@ -275,7 +267,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Events -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardEvents"
                 android:layout_width="0dp"
@@ -310,7 +301,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Notifications -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardNotifications"
                 android:layout_width="0dp"
@@ -345,7 +335,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Profile -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardProfile"
                 android:layout_width="0dp"
