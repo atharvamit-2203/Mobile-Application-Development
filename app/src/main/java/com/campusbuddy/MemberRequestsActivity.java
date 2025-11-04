@@ -20,9 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Activity for organizations to view and manage member join requests
- */
+
 public class MemberRequestsActivity extends AppCompatActivity {
     
     private RecyclerView recyclerView;

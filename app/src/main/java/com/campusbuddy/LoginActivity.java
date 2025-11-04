@@ -42,7 +42,6 @@ public class LoginActivity extends Activity {
             registerLink.setText("Don't have an account? Register");
         }
         
-        // Show sample credentials for testing
         if (role.equals("student")) {
             Toast.makeText(this, "Test: arjun.sharma@mpstme.edu.in / testpassword123", Toast.LENGTH_LONG).show();
         }
@@ -60,7 +59,6 @@ public class LoginActivity extends Activity {
     
     private void openRegister() {
         Intent intent;
-        // Route to role-specific registration activities
         switch (role) {
             case "faculty":
                 intent = new Intent(this, FacultyRegisterActivity.class);

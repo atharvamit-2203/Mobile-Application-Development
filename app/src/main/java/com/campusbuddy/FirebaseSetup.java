@@ -6,10 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 
-/**
- * Run this once to set up Firebase Firestore collections with sample data
- * This matches the structure from your Next.js/React backend
- */
+
 public class FirebaseSetup {
     
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();

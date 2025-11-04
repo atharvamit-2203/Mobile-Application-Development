@@ -123,7 +123,6 @@ public class ViewTeacherAssignmentsActivity extends Activity {
                         ((Number) assignment.get("student_count")).longValue() : 0;
                     
                     String display = facultyName + "\n" +
-                        "Subject: " + subject + "\n" +
                         course + " - Year " + year + " - Batch " + batch + "\n" +
                         "Students: " + studentCount;
                     

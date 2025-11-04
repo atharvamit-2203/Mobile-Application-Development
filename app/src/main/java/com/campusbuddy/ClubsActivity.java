@@ -50,8 +50,8 @@ public class ClubsActivity extends Activity {
     }
 
     private void loadUserMemberships() {
-        String userId = getSharedPreferences("user", MODE_PRIVATE).getString("user_id", "");
-        if (userId.isEmpty()) {
+        String userId = Prefs.getInstance(this).getUserId();
+        if (userId == null || userId.isEmpty()) {
             loadAllClubs();
             return;
         }
@@ -142,7 +142,12 @@ public class ClubsActivity extends Activity {
             TextView categoryText = convertView.findViewById(R.id.clubCategoryText);
             Button joinButton = convertView.findViewById(R.id.joinClubButton);
 
-            nameText.setText((String) club.get("club_name"));
+            // Try both "name" and "club_name" fields
+            String clubName = (String) club.get("name");
+            if (clubName == null || clubName.isEmpty()) {
+                clubName = (String) club.get("club_name");
+            }
+            nameText.setText(clubName != null ? clubName : "Unnamed Club");
             descText.setText((String) club.get("description"));
             categoryText.setText((String) club.get("category"));
 
@@ -192,7 +197,12 @@ public class ClubsActivity extends Activity {
             TextView categoryText = convertView.findViewById(R.id.myClubCategoryText);
             TextView roleText = convertView.findViewById(R.id.myClubRoleText);
 
-            nameText.setText((String) club.get("club_name"));
+            // Try both "name" and "club_name" fields
+            String clubName = (String) club.get("name");
+            if (clubName == null || clubName.isEmpty()) {
+                clubName = (String) club.get("club_name");
+            }
+            nameText.setText(clubName != null ? clubName : "Unnamed Club");
             descText.setText((String) club.get("description"));
             categoryText.setText("Category: " + club.get("category"));
             roleText.setText("Role: Member");
@@ -202,8 +212,8 @@ public class ClubsActivity extends Activity {
     }
 
     private void joinClub(String clubId) {
-        String userId = getSharedPreferences("user", MODE_PRIVATE).getString("user_id", "");
-        if (userId.isEmpty()) {
+        String userId = Prefs.getInstance(this).getUserId();
+        if (userId == null || userId.isEmpty()) {
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
             return;
         }
