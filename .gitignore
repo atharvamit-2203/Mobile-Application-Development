@@ -23,7 +23,6 @@ captures/
 output.json
 *.hprof
 
-# Firebase credentials
-google-services.json
+# Firebase credentials - keeping google-services.json for team sharing
+# google-services.json
 FIREBASE_SETUP.txt
-*.json
